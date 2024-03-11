@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Market from './Market';
 import CompanyList from './CompanyList';
 import MakePost from './MakePost';
+import ImagePickerExample from "./imagePicker";
 //import Profile from './Profile';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -14,7 +15,7 @@ const TabBar = () => {
             activeColor="#FF7043"
             barStyle={{ backgroundColor: "#4DB6AC" }}
         >
-            <Tab.Screen name="Profile" component={CompanyList}
+            <Tab.Screen name="Image Picker" component={ImagePickerExample}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color }) => (

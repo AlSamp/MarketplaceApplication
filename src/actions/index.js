@@ -18,21 +18,70 @@ export const formUpdate = ({ prop, value }) => {
     };
 }
 
-export const createNewPost = ({ species, breed, image, price, description, sellerName }) => {
+export const updateImage = (imageUri) => {
+    return {
+        type: 'UPDATE_IMAGE',
+        payload: imageUri
+    };
+};
+
+//export const createNewPost = ({ species, breed, image, price, description, sellerName }) => {
+//    return (dispatch) => {
+//        fetch('http://127.0.0.1:3000/marketPost', {
+//            method: 'POST',
+//            body: JSON.stringify({
+//                'species': species,
+//                'breed': breed,
+//                'image': image,
+//                'price': price,
+//                'description': description,
+//                'sellerName': sellerName,
+//            }),
+//            headers: {
+//                'Accept': 'application/json',
+//                'Content-Type': 'application/json'
+//                //'Content-Type': 'multipart/form-data'
+//            }
+//        })
+//            .then(() => {
+//                dispatch({ type: 'NEW_POST' });
+//            })
+//            .then(() => {
+//                dispatch(loadInitialPosts());
+//            })
+//            .catch(error => console.log(error))
+//    }
+//}
+
+
+export const createNewPost = ({ species, breed, image, price, description, sellerName, sellerId }) => {
+    const formData = new FormData(); // create form object
+
+    // Get file name from uri
+    const uriParts = image.split('/');
+    const fileName = uriParts[uriParts.length - 1]
+
+
+    formData.append('species', species);
+    formData.append('breed', breed);
+    formData.append('price', price);
+    formData.append('description', description);
+    formData.append('sellerName', sellerName);
+    formData.append('sellerId', sellerId);
+    formData.append('image', {
+        uri: image,
+        name: fileName,
+        type: 'image/jpeg',
+    });
+
     return (dispatch) => {
         fetch('http://127.0.0.1:3000/marketPost', {
             method: 'POST',
-            body: JSON.stringify({
-                'species': species,
-                'breed': breed,
-                'image': image,
-                'price': price,
-                'description': description,
-                'sellerName': sellerName,
-            }),
+            body: formData,
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                //'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data'
             }
         })
             .then(() => {
@@ -44,6 +93,7 @@ export const createNewPost = ({ species, breed, image, price, description, selle
             .catch(error => console.log(error))
     }
 }
+
 
 export const updatePost = (post) => {
     return {
@@ -105,3 +155,4 @@ export const loadInitialPosts = () => {
             .catch(error => console.log("loadInitialPosts : " + error))
     };
 };
+

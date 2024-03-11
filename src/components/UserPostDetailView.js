@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
-import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
 import * as actions from '../actions';
 
 const styles = StyleSheet.create({
@@ -20,7 +18,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
     },
     image: {
-        height: 300,
+        height: 100,
         backgroundColor: 'transparent',
     },
     closeIcon: {
@@ -94,28 +92,47 @@ class PostDetailView extends Component {
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <Image
-                        source={{ uri: `http://localhost:3000/${this.props.marketPost.image}` }}
+                        source={require('../images/background.jpg')}
                         style={styles.image}
                     />
+                    <EvilIcon name={'user'} size={100} style={styles.icon} />
                     <SimpleIcon name={'close'} size={30} style={styles.closeIcon}
-                        onPress={() => this.props.noneSelected()} pawpound
+                        onPress={() => this.props.noneSelected()}
                     />
+                    <Text style={styles.title1}>{this.props.marketPost.species} {this.props.marketPost.breed}</Text>
+                    <Text style={styles.title2}>{this.props.marketPost.price}</Text>
                     <View style={styles.textArea}>
-
-                        <FontAwesome name="paw" size={40} style={styles.textIcons} />
-                        <Text style={styles.finalText}>{this.props.marketPost.breed}</Text>
+                        <MaterialIcon name={'phone'} size={40} style={styles.textIcons} />
+                        <Text style={styles.finalText}>{this.props.marketPost.image}</Text>
                     </View>
                     <View style={styles.textArea}>
-                        <FontAwesome5 name={'pound-sign'} size={40} style={styles.textIcons} />
-                        <Text style={styles.finalText}>{"Price : £" + this.props.marketPost.price}</Text>
+                        <MaterialIcon name={'assignment'} size={40} style={styles.textIcons} />
+                        <Text style={styles.finalText}>{/*this.props.person.project*/}</Text>
                     </View>
                     <View style={styles.textArea}>
                         <MaterialIcon name={'mode-edit'} size={40} style={styles.textIcons} />
                         <Text style={styles.finalText}>{this.props.marketPost.description}</Text>
                     </View>
+                    <View style={styles.editDeleteArea}>
+                        <TouchableOpacity style={styles.sections}
+                            onPress={() => { this.updateTest(); }}
+                        >
+                            <MaterialIcon name={'autorenew'} size={40} style={styles.editIcon} />
+                            <Text style={styles.finalText}>EDIT</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.sections}
+                            onPress={() => { this.props.deletePost(this.props.marketPost._id); }}
+                        >
+                            <MaterialIcon name={'delete-forever'} size={40} style={styles.editIcon} />
+                            <Text style={styles.finalText}>DELETE</Text>
+                        </TouchableOpacity>
+                    </View>
                     <View style={styles.actionArea}>
                         <TouchableOpacity>
-                            <MaterialIcon name={'sms'} size={40} style={styles.textIcons} />
+                            <Image
+                                source={require('../images/sms.png')}
+                                style={styles.actionImage}
+                            />
                             <Text>SMS</Text>
                         </TouchableOpacity>
                     </View>

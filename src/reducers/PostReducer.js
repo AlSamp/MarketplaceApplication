@@ -93,6 +93,11 @@ export default (state = initialState, action) => {
                 displayPost: false,
                 selectedPost: null,
             }
+        case 'UPDATE_IMAGE':
+            return {
+                ...state,
+                image: action.payload,
+            }
 
         default:
             return state;

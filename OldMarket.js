@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import PostMarketView from './PostMarketView';
 import PostDetail from './PostDetail';
-import PostDetailView from './PostDetailView';
+import PostDetailView from './src/components/UserPostDetailView';
 import { loadInitialContacts } from '../actions';
 
 const styles = StyleSheet.create({

@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import * as actions from '../actions';
+
 
 const styles = StyleSheet.create({
     title: {
         top: -60,
         left: 100,
         fontSize: 24,
+        color: 'white'
     },
     image: {
         height: 175,
@@ -30,22 +32,18 @@ const styles = StyleSheet.create({
 
 const PostMarketView = (props) => {
     return (
-        <TouchableWithoutFeedback onPress={() => props.selectPost(props.marketPost)}>
+        <TouchableOpacity onPress={() => props.selectPost(props.marketPost)}>
             <View>
                 <Image
-                    source={{ uri: `http://localhost:3000/${props.marketPost.image}` }}
+                    source={{ uri: `http://localhost:3000/${props.marketPost.image}` }} // display post image
                     style={styles.image}
                 />
-                <Icon
-                    name={'user'}
-                    size={100}
-                    style={styles.icon}
-                />
-                <Text style={styles.title}>{props.marketPost.breed} {props.marketPost.species}</Text>
-                <Text style={styles.action}>{props.marketPost.image}  ghhgf</Text>
+                <Text style={styles.action}>{props.marketPost.breed}</Text>
             </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
     )
 }
+
+
 
 export default connect(null, actions)(PostMarketView);

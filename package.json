@@ -13,6 +13,7 @@
     "@react-navigation/material-bottom-tabs": "^6.2.24",
     "@react-navigation/native": "^6.1.14",
     "expo": "^50.0.11",
+    "expo-image-picker": "~14.7.1",
     "expo-status-bar": "~1.11.1",
     "lodash": "^4.17.21",
     "react": "18.2.0",

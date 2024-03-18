@@ -25,9 +25,9 @@ class Market extends Component {
             return (
                 <PostDetail />
             )
-        } else if (this.props.marketPost.sellerId == sellerId) {
+        } else //if (this.props.marketPost.sellerId == sellerId) {
 
-        }
+
         {
             return (
 

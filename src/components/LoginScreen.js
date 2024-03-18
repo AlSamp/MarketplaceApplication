@@ -69,6 +69,27 @@ class LoginScreen extends Component {
         }
     }
 
+    // LoginPress = async () => {
+    //     try {
+
+    //         // check user credentials by sending them to api call
+    //         let userData = await this.props.loginAuth(this.state.userName, this.state.password); // get user profile id
+    //         console.log("UserData = " + userData);
+
+    //         // upon success store needed user details
+    //         await AsyncStorage.setItem('userName', this.state.userName);
+    //         await AsyncStorage.setItem('userId', userData);
+
+    //         const localName = await AsyncStorage.getItem('userName');
+    //         const localId = await AsyncStorage.getItem('userId');
+    //         console.log("localName = " + localName);
+    //         console.log("localID = " + localId);
+    //         // navigate to market 
+    //         this.props.navigation.navigate('Market');
+    //     } catch (error) {
+    //         console.log("LoginPress " + error)
+    //     }
+    // }
     LoginPress = async () => {
         try {
 

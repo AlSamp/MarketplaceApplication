@@ -1,5 +1,6 @@
 const initialState = {
-    marketPost: [],
+    marketPost: [], // d
+    filteredPosts: [],
     displayPost: false,
     selectedPost: null,
     species: '',
@@ -8,6 +9,7 @@ const initialState = {
     price: '',
     description: '',
     sellerName: '',
+    userId: '',
     _id: '',
     toUpdate: false,
 }
@@ -21,6 +23,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 marketPost: action.payload,
+            }
+        case 'FILTERED_FETCH':
+            return {
+                ...state,
+                filteredPosts: action.payload,
             }
 
         case 'SELECTED_POST':
@@ -98,6 +105,22 @@ export default (state = initialState, action) => {
                 ...state,
                 image: action.payload,
             }
+
+        case 'SIGN_UP':
+            return {
+                ...state,
+                userName: action.payload.userName,
+                password: action.payload.password
+            }
+
+        case 'LOGIN_USER':
+            return {
+                ...state,
+                userName: action.payload.isUser.userName,
+                password: "",
+                userId: action.payload.isUser._id,
+            }
+
 
         default:
             return state;

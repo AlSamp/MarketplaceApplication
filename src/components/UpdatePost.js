@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, TextInput } from '@react-native-material/core';
 import * as actions from '../actions';
-
+import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
 const styles = StyleSheet.create({
     form: {
         flex: 1,
@@ -22,17 +22,20 @@ const styles = StyleSheet.create({
     }
 })
 
-class UpdatePerson extends Component {
+class UpdatePost extends Component {
     onUpdatePress() {
-        const { pecies, breed, image, price, description, sellerName, _id } = this.props;
+        const { species, breed, image, price, description, sellerName, _id } = this.props;
 
-        this.props.savePost({ pecies, breed, image, price, description, sellerName, _id });
+        this.props.savePost({ species, breed, image, price, description, sellerName, _id });
     }
 
     render() {
         return (
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.form}>
+                    <SimpleIcon name={'close'} size={30} style={styles.closeIcon}
+                        onPress={() => this.props.noneSelected()}
+                    />
                     <Text>Update Post</Text>
                     <TextInput
                         label='Species'
@@ -79,9 +82,12 @@ class UpdatePerson extends Component {
     }
 }
 
+
 const mapStateToProps = state => {
-    const { firstName, lastName, phone, email, company, project, notes, _id } = state;
-    return { firstName, lastName, phone, email, company, project, notes, _id };
+    return {
+        marketPost: state.selectedPost,
+        toUpdate: state.toUpdate,
+    }
 }
 
-export default connect(mapStateToProps, actions)(UpdatePerson);
+export default connect(mapStateToProps, actions)(UpdatePost);

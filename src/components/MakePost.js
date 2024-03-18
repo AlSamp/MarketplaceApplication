@@ -3,10 +3,8 @@ import { View, StyleSheet, ScrollView, Text, Image, Platform } from 'react-nativ
 import { connect } from 'react-redux';
 import { Button, TextInput } from '@react-native-material/core';
 import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as actions from '../actions';
-
-
-let tempId = 'ID_NOT_IMPLEMENTED';
 
 const styles = StyleSheet.create({
     form: {
@@ -32,15 +30,30 @@ const styles = StyleSheet.create({
 
 class MakePost extends Component {
 
+    onAddPress = async () => {
 
-    onAddPress() {
-        const { species, breed, image, price, description, sellerName, sellerId } = this.props;
+        try {
+            // get userName from local storage
+            const userName = await AsyncStorage.getItem('userName');
+            const userId = await AsyncStorage.getItem('userId')
+            console.log("TESTING : Stored Name from make post = " + userName);
 
-        this.props.formUpdate({ prop: 'sellerId', tempId });
+            //update form with userName being the sellerName on the post
+            this.props.formUpdate({ prop: 'sellerName', value: userName })
+            this.props.formUpdate({ prop: 'sellerId', value: userId })
+            console.log("AFTER UPDATE : " + this.props.sellerName)
 
-        this.props.createNewPost({ species, breed, image, price, description, sellerName, sellerId });
+            // get the properties to pass to api call
+            const { species, breed, image, price, description, sellerName, sellerId } = this.props;
+            this.props.createNewPost({ species, breed, image, price, description, sellerName, sellerId });
 
-        this.props.navigation.navigate('Market');
+            //navigate to market after successful upload
+            this.props.navigation.navigate('Market');
+
+        } catch (error) {
+            console.log("onAddPress : " + error);
+        }
+
     }
 
     imageFromLibrary = async () => {
@@ -90,6 +103,7 @@ class MakePost extends Component {
 
 
     render() {
+        //console.log("props.selledId :", this.props.sellerId);
         //console.log("props.image:", this.props.image);
         return (
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -97,13 +111,13 @@ class MakePost extends Component {
 
                     <Text>Make a new post</Text>
                     <TextInput
-                        label='Species'
+                        placeholder="Species"
                         style={styles.fieldStyles}
 
                         onChangeText={value => this.props.formUpdate({ prop: 'species', value })}
                     />
                     <TextInput
-                        label='Breed'
+                        placeholder="Breed"
                         style={styles.fieldStyles}
 
                         onChangeText={value => this.props.formUpdate({ prop: 'breed', value })}
@@ -114,19 +128,19 @@ class MakePost extends Component {
                     </View>
 
                     <TextInput
-                        label='Price'
+                        placeholder="Price"
                         style={styles.fieldStyles}
 
                         onChangeText={value => this.props.formUpdate({ prop: 'price', value })}
                     />
                     <TextInput
-                        label='SellerName'
+                        placeholder={this.props.sellerName}
                         style={styles.fieldStyles}
 
-                        onChangeText={value => this.props.formUpdate({ prop: 'sellerName', value })}
+                        onChangeText={value => this.props.formUpdate({ prop: 'description', value })}
                     />
                     <TextInput
-                        label='Description'
+                        placeholder="Description"
                         style={styles.fieldStyles}
 
                         onChangeText={value => this.props.formUpdate({ prop: 'description', value })}
@@ -137,6 +151,7 @@ class MakePost extends Component {
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                         <Button title="Upload from camera roll" onPress={this.imageFromLibrary.bind(this)} />
                         <Button title="Take Picture with camera" onPress={this.takePhoto.bind(this)} />
+                        <Button title="Test Button" onPress={this.getUserName} />
 
                     </View>
                 </View>
@@ -146,8 +161,9 @@ class MakePost extends Component {
 }
 
 const mapStateToProps = state => {
-    const { species, breed, image, price, description, sellerName, sellerId } = state;
-    return { species, breed, image, price, description, sellerName, sellerId };
+    // userName: state.userName;
+    const { species, breed, image, price, description, sellerName, sellerId, userName } = state;
+    return { species, breed, image, price, description, sellerName, sellerId, userName };
 }
 
 export default connect(mapStateToProps, actions)(MakePost);

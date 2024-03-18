@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 });
 
 
-class PostDetailView extends Component {
+class UserPostDetailView extends Component {
     updateTest() {
         this.props.updatePost(this.props.marketPost);
     }
@@ -92,7 +92,7 @@ class PostDetailView extends Component {
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <Image
-                        source={require('../images/background.jpg')}
+                        source={{ uri: `http://localhost:3000/${this.props.marketPost.image}` }}
                         style={styles.image}
                     />
                     <EvilIcon name={'user'} size={100} style={styles.icon} />
@@ -113,6 +113,8 @@ class PostDetailView extends Component {
                         <MaterialIcon name={'mode-edit'} size={40} style={styles.textIcons} />
                         <Text style={styles.finalText}>{this.props.marketPost.description}</Text>
                     </View>
+
+
                     <View style={styles.editDeleteArea}>
                         <TouchableOpacity style={styles.sections}
                             onPress={() => { this.updateTest(); }}
@@ -121,7 +123,7 @@ class PostDetailView extends Component {
                             <Text style={styles.finalText}>EDIT</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.sections}
-                            onPress={() => { this.props.deletePost(this.props.marketPost._id); }}
+                            onPress={() => { this.props.deletePost(this.props.marketPost._id); this.setState({}) }}
                         >
                             <MaterialIcon name={'delete-forever'} size={40} style={styles.editIcon} />
                             <Text style={styles.finalText}>DELETE</Text>
@@ -146,7 +148,8 @@ const mapStateToProps = state => {
     return {
         marketPost: state.selectedPost,
         toUpdate: state.toUpdate,
+        filteredPost: state.filteredPost,
     }
 }
 
-export default connect(mapStateToProps, actions)(PostDetailView);
+export default connect(mapStateToProps, actions)(UserPostDetailView);

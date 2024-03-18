@@ -98,7 +98,7 @@ class PostDetailView extends Component {
                         style={styles.image}
                     />
                     <SimpleIcon name={'close'} size={30} style={styles.closeIcon}
-                        onPress={() => this.props.noneSelected()} pawpound
+                        onPress={() => this.props.noneSelected()}
                     />
                     <View style={styles.textArea}>
 

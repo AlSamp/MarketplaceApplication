@@ -3,7 +3,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Market from './Market';
 import CompanyList from './CompanyList';
 import MakePost from './MakePost';
-import ImagePickerExample from "./imagePicker";
+import LoginScreen from "./LoginScreen";
+import UserPostsOnMarket from "./UserPostsOnMarket";
 //import Profile from './Profile';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -11,11 +12,21 @@ const Tab = createMaterialBottomTabNavigator();
 const TabBar = () => {
     return (
         <Tab.Navigator
-            initialRouteName="Market" a
+            initialRouteName="Market"
             activeColor="#FF7043"
-            barStyle={{ backgroundColor: "#4DB6AC" }}
+            barStyle={{
+                backgroundColor: "#4DB6AC",
+                borderRadius: 100,
+            }}
         >
-            <Tab.Screen name="Image Picker" component={ImagePickerExample}
+            <Tab.Screen name="Login" component={LoginScreen}
+                options={{
+                    tabBarLabel: 'Login',
+                    tabBarIcon: ({ color }) => (
+                        <Icon name={'log-in'} size={30} color={color} />
+                    ),
+                }} />
+            <Tab.Screen name="Profile" component={UserPostsOnMarket}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ color }) => (

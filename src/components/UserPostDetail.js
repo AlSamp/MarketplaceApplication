@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import PostDetailView from './PostDetailView';
+import UserPostDetailView from './UserPostDetailView';
 import UpdatePost from './UpdatePost';
 import * as actions from '../actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-class PostDetail extends Component {
+class UserPostDetail extends Component {
     renderDetails() {
 
-        return <PostDetailView />
-
+        if (this.props.toUpdate) {
+            return <UpdatePost />
+        } else {
+            return <UserPostDetailView />
+        }
     }
 
     render() {
@@ -27,4 +31,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, actions)(PostDetail);
+export default connect(mapStateToProps, actions)(UserPostDetail);

@@ -6,40 +6,60 @@ import * as actions from '../actions';
 
 
 const styles = StyleSheet.create({
-    title: {
-        top: -60,
-        left: 100,
-        fontSize: 24,
-        color: 'white'
+    centerContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10
+    },
+    container: {
+        backgroundColor: '#9E9E9E', // A light grey background 
+        borderRadius: 10,
+        padding: 10,
+        flexDirection: 'row',
+        width: '90%',
+        height: 200,
+        margin: 5,
     },
     image: {
-        height: 175,
+        flex: 2,
+        borderRadius: 10,
+        marginRight: 10,
     },
-    action: {
-        top: -30,
-        backgroundColor: 'black',
-        color: 'white',
-        fontSize: 24,
+    properties: {
+        flex: 1,
     },
-    icon: {
-        position: 'absolute',
-        top: 15,
-        left: 0,
-        color: 'white',
-        backgroundColor: 'rgba(255,255,255,0)',
-    },
+
+    text: {
+        fontSize: 15,
+        fontWeight: "bold",
+    }
 });
+
+
 
 const PostMarketView = (props) => {
     return (
         <TouchableOpacity onPress={() => props.selectPost(props.marketPost)}>
-            <View>
-                <Image
-                    source={{ uri: `http://localhost:3000/${props.marketPost.image}` }} // display post image
-                    style={styles.image}
-                />
-                <Text style={styles.action}>{props.marketPost.breed}</Text>
+
+            <View style={styles.centerContainer}>
+                <View style={styles.container}>
+                    <Image
+                        source={{ uri: `http://localhost:3000/${props.marketPost.image}` }}
+                        style={styles.image}
+                    />
+                    <View style={styles.properties}>
+                        {/*<Text>{'Species: ' + props.marketPost.species}</Text>*/}
+                        <Text style={styles.text}>{props.marketPost.breed}</Text>
+                        <Text style={styles.text}>{'Price: £' + props.marketPost.price}</Text>
+                        <Text style={styles.text}>{'Sold by : ' + props.marketPost.sellerName}</Text>
+                        <Text style={styles.text}>{'seller id : ' + props.marketPost.sellerId}</Text>
+                        <Text style={styles.text} numberOfLines={4}>{"\n" + props.marketPost.description}</Text>
+
+                    </View>
+                </View>
             </View>
+
         </TouchableOpacity>
     )
 }

@@ -6,6 +6,7 @@ import PostDetail from './PostDetail';
 import PostDetailView from './PostDetailView';
 import { loadInitialPosts } from '../actions';
 
+
 const styles = StyleSheet.create({
     container: {
         paddingTop: 80,
@@ -16,6 +17,7 @@ class Market extends Component {
     componentDidMount() {
         this.props.loadInitialPosts();
 
+
     }
 
     renderInitialView() {
@@ -23,8 +25,12 @@ class Market extends Component {
             return (
                 <PostDetail />
             )
-        } else {
+        } else if (this.props.marketPost.sellerId == sellerId) {
+
+        }
+        {
             return (
+
                 <FlatList
                     data={this.props.marketPost}
                     renderItem={({ item }) => <PostMarketView marketPost={item} />}

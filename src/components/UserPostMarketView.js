@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
 
 
 
-const PostMarketView = (props) => {
+const UserPostMarketView = (props) => {
     return (
-        <TouchableOpacity onPress={() => props.selectPost(props.marketPost)}>
+        <TouchableOpacity onPress={() => props.selectUserPost(props.marketPost)}>
 
             <View style={styles.centerContainer}>
                 <View style={styles.container}>
@@ -66,4 +66,4 @@ const PostMarketView = (props) => {
 
 
 
-export default connect(null, actions)(PostMarketView);
+export default connect(null, actions)(UserPostMarketView);

@@ -23,10 +23,13 @@ const styles = StyleSheet.create({
 })
 
 class UpdatePost extends Component {
-    onUpdatePress() {
-        const { species, breed, image, price, description, sellerName, _id } = this.props;
+    onUpdatePress = async () => {
+        const { species, breed, image, price, description, sellerName, sellerId, selectedUserPost } = this.props;
 
-        this.props.savePost({ species, breed, image, price, description, sellerName, _id });
+        let id = selectedUserPost._id;
+        console.log("UPDATE POST : " + species, breed, price, description, sellerName, sellerId, id)
+
+        await this.props.savePost(species, breed, price, description, sellerName, sellerId, id);
     }
 
     render() {
@@ -34,7 +37,7 @@ class UpdatePost extends Component {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.form}>
                     <SimpleIcon name={'close'} size={30} style={styles.closeIcon}
-                        onPress={() => this.props.noneSelected()}
+                        onPress={() => this.props.cancelUpdate()}
                     />
                     <Text>Update Post</Text>
                     <TextInput
@@ -52,26 +55,19 @@ class UpdatePost extends Component {
                     <TextInput
                         label='Image NOT FINAL'
                         style={styles.fieldStyles}
-                        value={""}
+
                         onChangeText={value => this.props.formUpdate({ prop: 'image', value })}
                     />
                     <TextInput
                         label='Price'
                         style={styles.fieldStyles}
-                        value={""}
                         onChangeText={value => this.props.formUpdate({ prop: 'price', value })}
-                    />
-                    <TextInput
-                        label='SellerName'
-                        style={styles.fieldStyles}
-                        value={""}
-                        onChangeText={value => this.props.formUpdate({ prop: 'sellerName', value })}
                     />
                     <TextInput
                         label='Description'
                         style={styles.fieldStyles}
-                        value={""}
-                        onChangeText={value => this.props.formUpdate({ prop: 'notes', value })}
+
+                        onChangeText={value => this.props.formUpdate({ prop: 'description', value })}
                     />
                     <View style={styles.addButton}>
                         <Button title='Update' color='#4db6ac' onPress={this.onUpdatePress.bind(this)} />
@@ -84,9 +80,14 @@ class UpdatePost extends Component {
 
 
 const mapStateToProps = state => {
+
+    const { species, breed, image, price, description, sellerName, sellerId, selectedUserPost, toUpdate } = state;
+
     return {
-        marketPost: state.selectedPost,
-        toUpdate: state.toUpdate,
+        // marketPost: state.selectedUserPost,
+        //toUpdate: state.toUpdate,
+        species, breed, image, price, description, sellerName, sellerId, selectedUserPost, toUpdate
+
     }
 }
 

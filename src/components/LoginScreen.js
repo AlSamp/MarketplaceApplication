@@ -1,9 +1,9 @@
 import React, { Component, useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
+import { set } from 'lodash';
 
 
 const styles = StyleSheet.create({
@@ -42,70 +42,48 @@ class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName: '',
+            displayName: "",
             password: '',
-            userId: '',
         };
     }
-    setUserName = (value) => {
-        this.setState({ userName: value })
+
+    setDisplayName = (value) => {
+        this.setState({ displayName: value })
     }
     setPassword = (value) => {
         this.setState({ password: value })
     }
-    getUserName = async () => {
-        return await AsyncStorage.getItem('userName')
-    }
 
     SignUpPress = async () => {
-        try {
-            await this.props.signUp(this.state.userName, this.state.password); // send userName and password ot the api call to sign up
-            await AsyncStorage.setItem('userName', this.state.userName);
-            //const storedUserName = await AsyncStorage.getItem('userName')
-            //console.log("Stored UserName = " + storedUserName); // confirm userName name is stored on device
-            // this.props.navigation.navigate('Market');
-        } catch (error) {
-            console.log("SignUpPress " + error)
+        if (this.props.sellerName.length >= 3 && this.state.password.length >= 6) {
+            try {
+                let tempName = this.props.sellerName;
+                console.log("TempName = " + tempName)
+                await this.props.signUp(this.props.sellerName, this.state.password); // send userName and password ot the api call to sign up
+                await this.props.formUpdate({ prop: 'sellerName', value: "" }) // clear name and password on screen to have user enter them again
+                this.setState({ password: '' });
+                await this.props.formUpdate({ prop: 'sellerName', value: tempName }) // clear name and password on screen to have user enter them again 
+                alert("You have successfully signed up, please re-enter your details to login");
+            } catch (error) {
+                alert(error);
+                console.log("SignUpPress " + error)
+            }
         }
+        else {
+            alert("Username must be at least 3 charaters long. Password must be at least 6 character long. Please try again.");
+        }
+
     }
 
-    // LoginPress = async () => {
-    //     try {
-
-    //         // check user credentials by sending them to api call
-    //         let userData = await this.props.loginAuth(this.state.userName, this.state.password); // get user profile id
-    //         console.log("UserData = " + userData);
-
-    //         // upon success store needed user details
-    //         await AsyncStorage.setItem('userName', this.state.userName);
-    //         await AsyncStorage.setItem('userId', userData);
-
-    //         const localName = await AsyncStorage.getItem('userName');
-    //         const localId = await AsyncStorage.getItem('userId');
-    //         console.log("localName = " + localName);
-    //         console.log("localID = " + localId);
-    //         // navigate to market 
-    //         this.props.navigation.navigate('Market');
-    //     } catch (error) {
-    //         console.log("LoginPress " + error)
-    //     }
-    // }
     LoginPress = async () => {
         try {
 
-            // check user credentials by sending them to api call
-            let userData = await this.props.loginAuth(this.state.userName, this.state.password); // get user profile id
-            console.log("UserData = " + userData);
 
-            // upon success store needed user details
-            await AsyncStorage.setItem('userName', this.state.userName);
-            await AsyncStorage.setItem('userId', userData);
+            let id = await this.props.loginAuth(this.props.sellerName, this.state.password); // get user profile id
+            console.log("id = " + id);
 
-            const localName = await AsyncStorage.getItem('userName');
-            const localId = await AsyncStorage.getItem('userId');
-            console.log("localName = " + localName);
-            console.log("localID = " + localId);
-            // navigate to market 
+            await this.props.formUpdate({ prop: 'sellerId', value: id })
+
             this.props.navigation.navigate('Market');
         } catch (error) {
             console.log("LoginPress " + error)
@@ -113,10 +91,10 @@ class LoginScreen extends Component {
     }
 
     render() {
-
-        console.log("UserName = " + this.state.userName); // confirm userName
+        //const { userName } = this.props
+        console.log("UserName = " + this.props.sellerName); // confirm userName
         console.log("Password= " + this.state.password);
-        console.log("UserId = " + this.state.userId);
+        console.log("SellerId = " + this.props.sellerId);
         return (
             <View style={styles.container}>
                 <SafeAreaView>
@@ -124,13 +102,21 @@ class LoginScreen extends Component {
                     <TextInput
                         style={styles.textInput}
                         placeholder='User Name'
-                        onChangeText={this.setUserName}
+                        value={this.props.sellerName}
+                        onChangeText={value => {
+                            this.props.formUpdate({ prop: 'sellerName', value });
+
+                        }}
+
+
                     />
                     <TextInput
                         style={styles.textInput}
                         placeholder='Password'
                         secureTextEntry={true}
+                        value={this.state.password}
                         onChangeText={this.setPassword}
+
                     />
                     <Button
                         style={styles.screenButton}
@@ -160,7 +146,7 @@ class LoginScreen extends Component {
 };
 
 const mapStateToProps = state => {
-    const { species, breed, image, price, description, sellerName, sellerId } = state;
-    return { species, breed, image, price, description, sellerName, sellerId };
+    const { sellerName, sellerId } = state;
+    return { sellerName, sellerId };
 }
 export default connect(mapStateToProps, actions)(LoginScreen);

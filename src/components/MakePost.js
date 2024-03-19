@@ -3,7 +3,6 @@ import { View, StyleSheet, ScrollView, Text, Image, Platform } from 'react-nativ
 import { connect } from 'react-redux';
 import { Button, TextInput } from '@react-native-material/core';
 import * as ImagePicker from 'expo-image-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as actions from '../actions';
 
 const styles = StyleSheet.create({
@@ -33,22 +32,17 @@ class MakePost extends Component {
     onAddPress = async () => {
 
         try {
-            // get userName from local storage
-            const userName = await AsyncStorage.getItem('userName');
-            const userId = await AsyncStorage.getItem('userId')
-            console.log("TESTING : Stored Name from make post = " + userName);
-
-            //update form with userName being the sellerName on the post
-            this.props.formUpdate({ prop: 'sellerName', value: userName })
-            this.props.formUpdate({ prop: 'sellerId', value: userId })
-            console.log("AFTER UPDATE : " + this.props.sellerName)
-
-            // get the properties to pass to api call
             const { species, breed, image, price, description, sellerName, sellerId } = this.props;
-            this.props.createNewPost({ species, breed, image, price, description, sellerName, sellerId });
-
+            let tempName = this.props.sellerName;
+            console.log("MAKE POST REDUX: " + this.props.sellerName)
+            // get the properties to pass to api call
+            await this.props.createNewPost({
+                species, breed, image, price, description, sellerName, sellerId
+            });
+            console.log("MAKE POST REDUX 2: " + sellerName)
             //navigate to market after successful upload
             this.props.navigation.navigate('Market');
+            await this.props.formUpdate({ prop: 'sellerName', value: tempName })
 
         } catch (error) {
             console.log("onAddPress : " + error);
@@ -133,12 +127,12 @@ class MakePost extends Component {
 
                         onChangeText={value => this.props.formUpdate({ prop: 'price', value })}
                     />
-                    <TextInput
+                    {/* <TextInput
                         placeholder={this.props.sellerName}
                         style={styles.fieldStyles}
 
                         onChangeText={value => this.props.formUpdate({ prop: 'description', value })}
-                    />
+                    /> */}
                     <TextInput
                         placeholder="Description"
                         style={styles.fieldStyles}
@@ -151,7 +145,6 @@ class MakePost extends Component {
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                         <Button title="Upload from camera roll" onPress={this.imageFromLibrary.bind(this)} />
                         <Button title="Take Picture with camera" onPress={this.takePhoto.bind(this)} />
-                        <Button title="Test Button" onPress={this.getUserName} />
 
                     </View>
                 </View>
@@ -161,9 +154,8 @@ class MakePost extends Component {
 }
 
 const mapStateToProps = state => {
-    // userName: state.userName;
-    const { species, breed, image, price, description, sellerName, sellerId, userName } = state;
-    return { species, breed, image, price, description, sellerName, sellerId, userName };
+    const { species, breed, image, price, description, sellerName, sellerId } = state;
+    return { species, breed, image, price, description, sellerName, sellerId };
 }
 
 export default connect(mapStateToProps, actions)(MakePost);

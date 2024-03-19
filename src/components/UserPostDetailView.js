@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
+import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import * as actions from '../actions';
 
 const styles = StyleSheet.create({
@@ -18,7 +20,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
     },
     image: {
-        height: 100,
+        height: 300,
         backgroundColor: 'transparent',
     },
     closeIcon: {
@@ -95,19 +97,16 @@ class UserPostDetailView extends Component {
                         source={{ uri: `http://localhost:3000/${this.props.marketPost.image}` }}
                         style={styles.image}
                     />
-                    <EvilIcon name={'user'} size={100} style={styles.icon} />
                     <SimpleIcon name={'close'} size={30} style={styles.closeIcon}
-                        onPress={() => this.props.noneSelected()}
+                        onPress={() => this.props.userNoneSelected()}
                     />
-                    <Text style={styles.title1}>{this.props.marketPost.species} {this.props.marketPost.breed}</Text>
-                    <Text style={styles.title2}>{this.props.marketPost.price}</Text>
                     <View style={styles.textArea}>
-                        <MaterialIcon name={'phone'} size={40} style={styles.textIcons} />
-                        <Text style={styles.finalText}>{this.props.marketPost.image}</Text>
+                        <FontAwesome name="paw" size={40} style={styles.textIcons} />
+                        <Text style={styles.finalText}>{this.props.marketPost.breed}</Text>
                     </View>
                     <View style={styles.textArea}>
-                        <MaterialIcon name={'assignment'} size={40} style={styles.textIcons} />
-                        <Text style={styles.finalText}>{/*this.props.person.project*/}</Text>
+                        <FontAwesome5 name={'pound-sign'} size={40} style={styles.textIcons} />
+                        <Text style={styles.finalText}>{"Price : £" + this.props.marketPost.price}</Text>
                     </View>
                     <View style={styles.textArea}>
                         <MaterialIcon name={'mode-edit'} size={40} style={styles.textIcons} />
@@ -123,19 +122,10 @@ class UserPostDetailView extends Component {
                             <Text style={styles.finalText}>EDIT</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.sections}
-                            onPress={() => { this.props.deletePost(this.props.marketPost._id); this.setState({}) }}
+                            onPress={() => { this.props.deletePost(this.props.marketPost._id); }}
                         >
                             <MaterialIcon name={'delete-forever'} size={40} style={styles.editIcon} />
                             <Text style={styles.finalText}>DELETE</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.actionArea}>
-                        <TouchableOpacity>
-                            <Image
-                                source={require('../images/sms.png')}
-                                style={styles.actionImage}
-                            />
-                            <Text>SMS</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
@@ -146,9 +136,8 @@ class UserPostDetailView extends Component {
 
 const mapStateToProps = state => {
     return {
-        marketPost: state.selectedPost,
+        marketPost: state.selectedUserPost,
         toUpdate: state.toUpdate,
-        filteredPost: state.filteredPost,
     }
 }
 

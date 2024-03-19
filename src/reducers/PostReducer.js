@@ -1,14 +1,15 @@
 const initialState = {
     marketPost: [], // d
-    filteredPosts: [],
     displayPost: false,
+    displayUserPost: false,
     selectedPost: null,
+    selectedUserPost: null,
     species: '',
     breed: '',
     image: '',
     price: '',
     description: '',
-    sellerName: '',
+    userName: '',
     userId: '',
     _id: '',
     toUpdate: false,
@@ -24,11 +25,6 @@ export default (state = initialState, action) => {
                 ...state,
                 marketPost: action.payload,
             }
-        case 'FILTERED_FETCH':
-            return {
-                ...state,
-                filteredPosts: action.payload,
-            }
 
         case 'SELECTED_POST':
             return {
@@ -37,11 +33,25 @@ export default (state = initialState, action) => {
                 selectedPost: action.selectId,
             }
 
+        case 'USER_SELECTED_POST':
+            return {
+                ...state,
+                displayUserPost: true,
+                selectedUserPost: action.selectId,
+            }
+
         case 'NONE_SELECTED':
             return {
                 ...state,
                 displayPost: false,
                 selectedPost: null,
+            }
+
+        case 'USER_NONE_SELECTED':
+            return {
+                ...state,
+                displayUserPost: false,
+                selectedUserPost: null,
             }
 
         case 'FORM_UPDATE':
@@ -58,7 +68,6 @@ export default (state = initialState, action) => {
                 image: '',
                 price: '',
                 description: '',
-                sellerName: '',
             }
 
         case 'ADD_POST':
@@ -76,7 +85,8 @@ export default (state = initialState, action) => {
                 image: action.payload.image,
                 price: action.payload.price,
                 description: action.payload.description,
-                sellerName: action.payload.sellerName,
+                //sellerName: action.payload.sellerName,
+
                 _id: action.payload._id,
             }
 
@@ -84,21 +94,20 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 toUpdate: false,
-                displayPost: false,
-                species: '',
-                breed: '',
-                image: '',
-                price: '',
-                description: '',
-                sellerName: '',
-                _id: '',
+                displayUserPost: false,
+                //species: '',
+                //breed: '',
+                //image: '',
+                //price: '',
+                //description: '',
+                //_id: '',
             }
 
         case 'DELETE_POST':
             return {
                 ...state,
-                displayPost: false,
-                selectedPost: null,
+                displayUserPost: false,
+                selectedUSerPost: null,
             }
         case 'UPDATE_IMAGE':
             return {
@@ -121,6 +130,12 @@ export default (state = initialState, action) => {
                 userId: action.payload.isUser._id,
             }
 
+        case 'CANCEL_UPDATE':
+            return {
+                ...state,
+                toUpdate: false,
+                //selectedPost: null,
+            }
 
         default:
             return state;

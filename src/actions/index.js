@@ -4,10 +4,28 @@ export const selectPost = (postId) => {
         selectId: postId,
     }
 }
+export const selectUserPost = (postId) => {
+    return {
+        type: 'USER_SELECTED_POST',
+        selectId: postId,
+    }
+}
 
 export const noneSelected = () => {
     return {
         type: 'NONE_SELECTED',
+    }
+}
+
+export const userNoneSelected = () => {
+    return {
+        type: 'USER_NONE_SELECTED',
+    }
+}
+
+export const cancelUpdate = () => {
+    return {
+        type: 'CANCEL_UPDATE',
     }
 }
 
@@ -74,33 +92,83 @@ export const updatePost = (post) => {
     }
 }
 
-export const savePost = ({ species, breed, image, price, description, sellerName, notes, _id }) => {
+//export const savePost = ({ species, breed, price, description, sellerName, sellerId, _id }) => {
+//    return (dispatch) => {
+//        console.log("Parameters:", { species, breed, image, price, description, sellerName, sellerId, _id });
+//
+//        fetch(`http://127.0.0.1:3000/marketPost/${_id}`, {
+//            method: 'PUT',
+//            body: JSON.stringify({
+//                species,
+//                breed,
+//                image,
+//                price,
+//                description,
+//                sellerName,
+//                sellerId,
+//            }),
+//            headers: {
+//                'Accept': 'application/json',
+//                'Content-Type': 'application/json'
+//            }
+//        })
+//            .then(response => {
+//                if (!response.ok) {
+//                    throw new Error('Network response not ok');
+//                }
+//                return response.json();
+//            })
+//            .then(data => {
+//                console.log("Response from server:", data);
+//                dispatch({ type: 'SAVE_POST' });
+//                dispatch(loadInitialPosts());
+//            })
+//            .catch(error => {
+//                console.log("Error:", error);
+//                // Handle errors here, e.g., dispatch an action to update Redux state with error information
+//            });
+//    }
+//}
+
+export const savePost = (species, breed, price, description, sellerName, sellerId, postId) => {
+    const formData = new FormData(); // create form object
+
+    // Get file name from uri
+    //const uriParts = image.split('/');
+    //const fileName = uriParts[uriParts.length - 1]
+
+    formData.append('species', species);
+    formData.append('breed', breed);
+    formData.append('price', price);
+    formData.append('description', description);
+    formData.append('sellerName', sellerName);
+    formData.append('sellerId', sellerId);
+
+    // Log the FormData
+    console.log('FormData:', formData);
+
+
     return (dispatch) => {
-        fetch(`http://127.0.0.1:3000/marketPost/${_id}`, {
+        fetch(`http://127.0.0.1:3000/marketPost/${postId}`, {
             method: 'PUT',
-            body: JSON.stringify({
-                'species': species,
-                'breed': breed,
-                'image': image,
-                'price': price,
-                'description': description,
-                'sellerName': sellerName,
-                'notes': notes,
-            }),
+            body: formData,
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'multipart/form-data'
             }
         })
-            .then(() => {
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response not ok');
+                }
                 dispatch({ type: 'SAVE_POST' });
+                dispatch(loadInitialPosts(), loadUserPosts());
             })
-            .then(() => {
-                dispatch(loadInitialPosts());
-            })
-            .catch(error => console.log(error))
+            .catch(error => console.log(error));
     }
 }
+
+
 
 export const deletePost = (id) => {
     return (dispatch) => {
@@ -109,7 +177,7 @@ export const deletePost = (id) => {
                 dispatch({ type: 'DELETE_POST' });
             })
             .then(() => {
-                dispatch(loadInitialPosts(), loadUserPosts());
+                dispatch(loadInitialPosts());
             })
             .catch(error => console.log(error))
     }
@@ -190,7 +258,7 @@ export const loginAuth = (userName, password) => {
             if (data && data.isUser && data.isUser._id) {
                 dispatch(loadInitialPosts()); // Dispatch loadInitialPosts action
                 dispatch(loadUserPosts()); // Dispatch filteredPosts action
-                return data.isUser._id; // Return the _id
+                return data.isUser._id; // Return the only _id
             } else {
                 throw new Error('Invalid response format');
             }

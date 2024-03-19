@@ -12,7 +12,7 @@ const Tab = createMaterialBottomTabNavigator();
 const TabBar = () => {
     return (
         <Tab.Navigator
-            initialRouteName="Market"
+            initialRouteName="Login"
             activeColor="#FF7043"
             barStyle={{
                 backgroundColor: "#4DB6AC",

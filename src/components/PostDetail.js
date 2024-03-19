@@ -7,9 +7,7 @@ import * as actions from '../actions';
 
 class PostDetail extends Component {
     renderDetails() {
-
         return <PostDetailView />
-
     }
 
     render() {
@@ -23,7 +21,7 @@ class PostDetail extends Component {
 
 const mapStateToProps = state => {
     return {
-        toUpdate: state.toUpdate,
+        //toUpdate: state.toUpdate,
     }
 }
 

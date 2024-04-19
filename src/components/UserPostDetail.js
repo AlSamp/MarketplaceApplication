@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import UserPostDetailView from './UserPostDetailView';
 import UpdatePost from './UpdatePost';
 import * as actions from '../actions';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 class UserPostDetail extends Component {
     renderDetails() {
 

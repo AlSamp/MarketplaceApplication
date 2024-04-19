@@ -5,6 +5,7 @@ import CompanyList from './CompanyList';
 import MakePost from './MakePost';
 import LoginScreen from "./LoginScreen";
 import UserPostsOnMarket from "./UserPostsOnMarket";
+import Messenger from "./Messenger";
 //import Profile from './Profile';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -15,7 +16,7 @@ const TabBar = () => {
             initialRouteName="Login"
             activeColor="#FF7043"
             barStyle={{
-                backgroundColor: "#4DB6AC",
+                backgroundColor: "teal",
                 borderRadius: 100,
             }}
         >
@@ -33,7 +34,7 @@ const TabBar = () => {
                         <Icon name={'person-circle-outline'} size={30} color={color} />
                     ),
                 }} />
-            <Tab.Screen name="Messages" component={CompanyList} archive
+            <Tab.Screen name="Messages" component={Messenger} archive
                 options={{
                     tabBarLabel: 'Messages',
                     tabBarIcon: ({ color }) => (

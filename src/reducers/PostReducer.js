@@ -2,8 +2,13 @@ const initialState = {
     marketPost: [], // d
     displayPost: false,
     displayUserPost: false,
+    displayChat: false,
     selectedPost: null,
     selectedUserPost: null,
+    selectedChat: null,
+    displayMarketChat: null,
+    selectedMarketChatId: null,
+    selectedMarketChat: null,
     species: '',
     breed: '',
     image: '',
@@ -13,6 +18,9 @@ const initialState = {
     userId: '',
     _id: '',
     toUpdate: false,
+    chats: [],
+    activeTab: 0,
+
 }
 
 
@@ -24,6 +32,37 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 marketPost: action.payload,
+
+            }
+
+        case 'RESET_STORE':
+
+            return {
+                marketPost: null,
+                displayPost: false,
+                displayUserPost: false,
+                displayChat: false,
+                selectedPost: null,
+                selectedUserPost: null,
+                selectedChat: null,
+                displayMarketChat: null,
+                selectedMarketChatId: null,
+                selectedMarketChat: null,
+                species: '',
+                breed: '',
+                image: '',
+                price: '',
+                description: '',
+                userName: '',
+                userId: '',
+                _id: '',
+                toUpdate: false,
+                chats: [],
+                activeTab: 0,
+            }
+        case 'RESET_CHAT':
+            return {
+                chats: [],
             }
 
         case 'SELECTED_POST':
@@ -40,6 +79,35 @@ export default (state = initialState, action) => {
                 selectedUserPost: action.selectId,
             }
 
+        case 'NO_CHAT_SELECTED':
+            return {
+                ...state,
+                displayChat: false,
+                selectedChat: null,
+            }
+
+        case 'SELECTED_CHAT':
+            return {
+                ...state,
+                displayChat: true,
+                selectedChat: action.payload,
+            }
+
+        case 'MARKET_CHAT':
+            return {
+                ...state,
+                displayMarketChat: true,
+                selectedMarketChat: action.payload,
+            }
+
+        case 'NO_MARKET_CHAT_SELECTED':
+            return {
+                ...state,
+                displayMarketChat: false,
+                selectedMarketChat: null,
+            }
+
+
         case 'NONE_SELECTED':
             return {
                 ...state,
@@ -53,6 +121,8 @@ export default (state = initialState, action) => {
                 displayUserPost: false,
                 selectedUserPost: null,
             }
+
+
 
         case 'FORM_UPDATE':
             return {
@@ -136,6 +206,34 @@ export default (state = initialState, action) => {
                 toUpdate: false,
                 //selectedPost: null,
             }
+        case 'INITIAL_CHAT_FETCH':
+            return {
+                ...state,
+                chats: action.payload, // Update chats with fetched data
+            };
+
+        case 'MESSAGE_SENT':
+            // Update the chat messages with the new data from the action payload
+            return {
+                ...state,
+                //displayChat: true,
+                selectedChat: action.payload,
+            };
+
+
+        case 'CREATE_CHAT':
+
+            return {
+                ...state,
+                displayChat: true,
+                selectedChat: action.payload,
+            };
+        case 'SET_ACTIVE_TAB':
+            return {
+                ...state,
+                activeTab: action.payload,
+            };
+
 
         default:
             return state;

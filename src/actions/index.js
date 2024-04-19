@@ -1,3 +1,23 @@
+
+export const resetChatState = () => {
+    return {
+        type: 'RESET_CHAT',
+    }
+}
+
+
+export const noChatSelected = () => {
+    return {
+        type: 'NO_CHAT_SELECTED',
+    }
+}
+
+export const noMarketChatSelected = () => {
+    return {
+        type: 'NO_MARKET_CHAT_SELECTED',
+    }
+}
+
 export const selectPost = (postId) => {
     return {
         type: 'SELECTED_POST',
@@ -91,44 +111,6 @@ export const updatePost = (post) => {
         payload: post,
     }
 }
-
-//export const savePost = ({ species, breed, price, description, sellerName, sellerId, _id }) => {
-//    return (dispatch) => {
-//        console.log("Parameters:", { species, breed, image, price, description, sellerName, sellerId, _id });
-//
-//        fetch(`http://127.0.0.1:3000/marketPost/${_id}`, {
-//            method: 'PUT',
-//            body: JSON.stringify({
-//                species,
-//                breed,
-//                image,
-//                price,
-//                description,
-//                sellerName,
-//                sellerId,
-//            }),
-//            headers: {
-//                'Accept': 'application/json',
-//                'Content-Type': 'application/json'
-//            }
-//        })
-//            .then(response => {
-//                if (!response.ok) {
-//                    throw new Error('Network response not ok');
-//                }
-//                return response.json();
-//            })
-//            .then(data => {
-//                console.log("Response from server:", data);
-//                dispatch({ type: 'SAVE_POST' });
-//                dispatch(loadInitialPosts());
-//            })
-//            .catch(error => {
-//                console.log("Error:", error);
-//                // Handle errors here, e.g., dispatch an action to update Redux state with error information
-//            });
-//    }
-//}
 
 export const savePost = (species, breed, price, description, sellerName, sellerId, postId) => {
     const formData = new FormData(); // create form object
@@ -269,5 +251,156 @@ export const loginAuth = (userName, password) => {
     };
 };
 
+// messenger 
 
+export const loadInitialChats = (userId) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:3000/messages/getUserChats/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch user chats');
+            }
+
+            const data = await response.json();
+            console.log("INITIAL CHATS data == ", data);
+
+            // Dispatch action to handle the fetched data
+            dispatch({ type: 'INITIAL_CHAT_FETCH', payload: data });
+        } catch (error) {
+            console.log("LOAD INITIAL CHATS ERROR: ", error);
+            throw error;
+        }
+    };
+};
+
+export const selectChat = (chatId) => {
+    return (dispatch) => {
+        fetch(`http://localhost:3000/messages/getSelectedChat/${chatId}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json()) // Parse response JSON
+            .then(data => {
+
+                dispatch({ type: 'SELECTED_CHAT', payload: data });
+                //  dispatch(loadInitialChats());
+            })
+            .catch(error => console.log(error))
+    }
+}
+
+export const marketChat = (chatId) => {
+    return (dispatch) => {
+        fetch(`http://localhost:3000/messages/getSelectedChat/${chatId}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json()) // Parse response JSON
+            .then(data => {
+
+                dispatch({ type: 'MARKET_CHAT', payload: data });
+                //  dispatch(loadInitialChats());
+            })
+            .catch(error => console.log(error))
+    }
+}
+
+export const sendMarketMessage = (senderId, recipientId, content) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch('http://localhost:3000/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'senderId': senderId,
+                    'recipientId': recipientId,
+                    'content': content,
+                })
+            });
+            const data = await response.json();
+            if (data && data.data) {
+                // If the message was sent successfully, dispatch an action to update the chat messages
+                dispatch({ type: 'MARKET_CHAT' });
+            } else {
+                console.error('Failed to send message');
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
+    };
+};
+
+export const sendMessage = (senderId, recipientId, content) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch('http://localhost:3000/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'senderId': senderId,
+                    'recipientId': recipientId,
+                    'content': content,
+                })
+            });
+            const data = await response.json();
+            if (data && data.data) {
+                // If the message was sent successfully, dispatch an action to update the chat messages
+                dispatch({ type: 'MESSAGE_SENT' });
+            } else {
+                console.error('Failed to send message');
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
+    };
+};
+
+export const createChat = (senderId, recipientId) => {
+    return async (dispatch) => {
+        try {
+            const response = await fetch('http://localhost:3000/messages/createChat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'senderId': senderId,
+                    'recipientId': recipientId,
+                })
+            });
+            const data = await response.json();
+            // console.log(data);
+            if (data) {
+                // If the message was sent successfully, dispatch an action to update the chat messages
+                dispatch({ type: 'CREATE_CHAT', payload: data });
+            } else {
+                console.error('Failed to create chat');
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
+    };
+};
+
+export const setActiveTab = (tabIndex) => ({
+    type: 'SET_ACTIVE_TAB',
+    payload: tabIndex,
+});
 

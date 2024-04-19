@@ -3,10 +3,20 @@ import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import PostDetailView from './PostDetailView';
 import UpdatePost from './UpdatePost';
+import MarketChatScreen from './MarketChatScreen';
 import * as actions from '../actions';
+import MessengerChatScreen from './MessengerChatScreen';
 
 class PostDetail extends Component {
     renderDetails() {
+
+        // if (this.props.displayChat === true) {
+        //     console.log("display chat == true so output messenger chat screen")
+        //     return (
+        //         <MessengerChatScreen />
+        //     )
+        // }
+        // else
         return <PostDetailView />
     }
 
@@ -21,7 +31,7 @@ class PostDetail extends Component {
 
 const mapStateToProps = state => {
     return {
-        //toUpdate: state.toUpdate,
+        displayChat: state.displayChat,
     }
 }
 

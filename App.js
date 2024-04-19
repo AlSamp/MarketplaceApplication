@@ -6,8 +6,17 @@ import thunk from 'redux-thunk';
 import reducers from './src/reducers/PostReducer';
 import { NavigationContainer } from '@react-navigation/native';
 import TabBar from './src/components/TabBar';
+import { composeWithDevTools } from 'remote-redux-devtools';
 
-const store = createStore(reducers, applyMiddleware(thunk));
+
+const composeEnhancers = composeWithDevTools({
+  realtime: true,
+  name: 'Your Instance Name',
+  hostname: 'localhost',
+  port: 1024 // the port your remotedev server is running at
+})
+
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunk)));
 
 export default function App() {
   return (

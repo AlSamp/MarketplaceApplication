@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, Text, Image, TouchableOpacity, Button } from 'react-native';
 import { connect } from 'react-redux';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -7,6 +7,9 @@ import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
 import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import * as actions from '../actions';
+import MessengerChatScreen from './MessengerChatScreen';
+
+
 
 const styles = StyleSheet.create({
     title1: {
@@ -89,6 +92,17 @@ class PostDetailView extends Component {
         this.props.updatePost(this.props.marketPost);
     }
 
+
+    openMarketChat = async () => {
+        console.log("MESSAGE SELLER BUTTON PRESSED");
+        const sender = this.props.sellerId;
+        const recipient = this.props.marketPost.sellerId;
+
+        // Call the createChat action
+        await this.props.createChat(sender, recipient);
+        alert("You've just started a conversation, please go to Messages to continue");
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -100,6 +114,7 @@ class PostDetailView extends Component {
                     <SimpleIcon name={'close'} size={30} style={styles.closeIcon}
                         onPress={() => this.props.noneSelected()}
                     />
+
                     <View style={styles.textArea}>
 
                         <FontAwesome name="paw" size={40} style={styles.textIcons} />
@@ -115,12 +130,14 @@ class PostDetailView extends Component {
                     </View>
                     <View style={styles.actionArea}>
                         <TouchableOpacity>
-                            <MaterialIcon name={'sms'} size={40} style={styles.textIcons} />
-                            <Text>SMS</Text>
+                            <View style={styles.addButton}>
+                                <Button title='Start Conversation In Messenger' color='#4db6ac' onPress={() => this.openMarketChat()} />
+                            </View>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
             </View>
+
         );
     }
 }
@@ -129,6 +146,12 @@ const mapStateToProps = state => {
     return {
         marketPost: state.selectedPost,
         toUpdate: state.toUpdate,
+        displayMarketChat: state.displayMarketChat,
+        sellerId: state.sellerId,
+        selectedMarketChat: state.selectedMarketChat,
+        selectedMarketChatId: state.selectedMarketChatId,
+
+
     }
 }
 

@@ -32,6 +32,18 @@ class UpdatePost extends Component {
         await this.props.savePost(species, breed, price, description, sellerName, sellerId, id);
     }
 
+    // onUpdatePress = async () => {
+    //     //const { species, breed, image, price, description, sellerName, sellerId, selectedUserPost } = this.props;
+
+    //     //let id = selectedUserPost._id;
+    //     //console.log("UPDATE POST : " + species, breed, price, description, sellerName, sellerId, id)
+    //     console.log("Species = " + this.props.species);
+    //     console.log("Breed = " + this.props.breed);
+    //     console.log("Price = " + this.props.price);
+    //     console.log("Description = " + this.props.description);
+    //     //await this.props.savePost(species, breed, price, description, sellerName, sellerId, id);
+    // }
+
     render() {
         return (
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -43,13 +55,13 @@ class UpdatePost extends Component {
                     <TextInput
                         label='Species'
                         style={styles.fieldStyles}
-
+                        value={this.props.species}
                         onChangeText={value => this.props.formUpdate({ prop: 'species', value })}
                     />
                     <TextInput
                         label='Breed'
                         style={styles.fieldStyles}
-
+                        value={this.props.breed}
                         onChangeText={value => this.props.formUpdate({ prop: 'breed', value })}
                     />
                     <TextInput
@@ -61,12 +73,13 @@ class UpdatePost extends Component {
                     <TextInput
                         label='Price'
                         style={styles.fieldStyles}
+                        value={this.props.price}
                         onChangeText={value => this.props.formUpdate({ prop: 'price', value })}
                     />
                     <TextInput
                         label='Description'
                         style={styles.fieldStyles}
-
+                        value={this.props.description}
                         onChangeText={value => this.props.formUpdate({ prop: 'description', value })}
                     />
                     <View style={styles.addButton}>

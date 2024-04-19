@@ -78,12 +78,13 @@ class LoginScreen extends Component {
     LoginPress = async () => {
         try {
 
+            //await actions.loadInitialPosts();
 
             let id = await this.props.loginAuth(this.props.sellerName, this.state.password); // get user profile id
             console.log("id = " + id);
 
             await this.props.formUpdate({ prop: 'sellerId', value: id })
-
+            //await this.props.resetChatState();
             this.props.navigation.navigate('Market');
         } catch (error) {
             console.log("LoginPress " + error)
@@ -146,7 +147,7 @@ class LoginScreen extends Component {
 };
 
 const mapStateToProps = state => {
-    const { sellerName, sellerId } = state;
+    const { sellerName, sellerId, chats } = state;
     return { sellerName, sellerId };
 }
 export default connect(mapStateToProps, actions)(LoginScreen);

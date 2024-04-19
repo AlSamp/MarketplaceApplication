@@ -7,6 +7,7 @@ import PostDetailView from './PostDetailView';
 import { loadInitialPosts } from '../actions';
 
 
+
 const styles = StyleSheet.create({
     container: {
         paddingTop: 80,
